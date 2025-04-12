@@ -16,16 +16,17 @@ clean:
 	rm -f libclay/*.c
 	rm -f libclay/*.json
 	rm -f libclay/_clay.pxd
-	rm -f libclay/_wrapper.pyx
+	rm -f libclay/_wrapper.{pyx,pxd}
 
-package: libclay/_macro.pyx libclay/_clay.json libclay/_clay.pxd libclay/_wrapper.pyx
+package: libclay/__init__.pyx libclay/_macro.pyx libclay/_clay.json libclay/_clay.pxd libclay/_wrapper.pyx
 	python setup.py build_ext --inplace
 
-libclay/_clay.json: libclay/make_json.py libclay/clay.h
-	python -m libclay.make_json libclay/clay.h libclay/_clay.json
+libclay/_clay.json: make_json.py libclay/clay.h
+	python -m make_json libclay/clay.h libclay/_clay.json
 
 libclay/_clay.pxd: libclay/clay.h
 	autopxd libclay/clay.h libclay/_clay.pxd
+	patch -p1 < clay_pxd.patch
 
-libclay/_wrapper.pyx: libclay/make_wrappers.py libclay/_clay.json
-	python -m libclay.make_wrappers libclay/_clay.json libclay/_wrapper.pyx
+libclay/_wrapper.pyx: make_wrappers.py libclay/_clay.json
+	python -m make_wrappers libclay/_clay.json libclay/_wrapper.pyx

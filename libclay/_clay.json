@@ -1,0 +1,1936 @@
+[
+  [
+    {
+      "name": "CLAY__ELEMENT_DEFINITION_LATCH",
+      "type_name": "uint8_t",
+      "type": "IdentifierType"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay__SuppressUnusedLatchDefinitionVariableWarning",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "name": "Clay_String",
+      "fields": [
+        {
+          "name": "isStaticallyAllocated",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "length",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "chars",
+            "type_name": "const char",
+            "type": "IdentifierType"
+          },
+          "name": "chars",
+          "type_name": "const char*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_StringSlice",
+      "fields": [
+        {
+          "name": "length",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "chars",
+            "type_name": "const char",
+            "type": "IdentifierType"
+          },
+          "name": "chars",
+          "type_name": "const char*",
+          "type": "Ptr"
+        },
+        {
+          "node": {
+            "name": "baseChars",
+            "type_name": "const char",
+            "type": "IdentifierType"
+          },
+          "name": "baseChars",
+          "type_name": "const char*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_Arena",
+      "fields": [
+        {
+          "name": "nextAllocation",
+          "type_name": "uintptr_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "capacity",
+          "type_name": "size_t",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "memory",
+            "type_name": "char",
+            "type": "IdentifierType"
+          },
+          "name": "memory",
+          "type_name": "char*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_Dimensions",
+      "fields": [
+        {
+          "name": "width",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "height",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_Vector2",
+      "fields": [
+        {
+          "name": "x",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "y",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_Color",
+      "fields": [
+        {
+          "name": "r",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "g",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "b",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "a",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_BoundingBox",
+      "fields": [
+        {
+          "name": "x",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "y",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "width",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "height",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ElementId",
+      "fields": [
+        {
+          "name": "id",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "offset",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "baseId",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "stringId",
+          "type_name": "Clay_String",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_CornerRadius",
+      "fields": [
+        {
+          "name": "topLeft",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "topRight",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "bottomLeft",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "bottomRight",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_LayoutDirection",
+      "items": [
+        "CLAY_LEFT_TO_RIGHT",
+        "CLAY_TOP_TO_BOTTOM"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_LayoutAlignmentX",
+      "items": [
+        "CLAY_ALIGN_X_LEFT",
+        "CLAY_ALIGN_X_RIGHT",
+        "CLAY_ALIGN_X_CENTER"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_LayoutAlignmentY",
+      "items": [
+        "CLAY_ALIGN_Y_TOP",
+        "CLAY_ALIGN_Y_BOTTOM",
+        "CLAY_ALIGN_Y_CENTER"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay__SizingType",
+      "items": [
+        "CLAY__SIZING_TYPE_FIT",
+        "CLAY__SIZING_TYPE_GROW",
+        "CLAY__SIZING_TYPE_PERCENT",
+        "CLAY__SIZING_TYPE_FIXED"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_ChildAlignment",
+      "fields": [
+        {
+          "name": "x",
+          "type_name": "Clay_LayoutAlignmentX",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "y",
+          "type_name": "Clay_LayoutAlignmentY",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_SizingMinMax",
+      "fields": [
+        {
+          "name": "min",
+          "type_name": "float",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "max",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_SizingSize",
+      "fields": [
+        {
+          "name": "minMax",
+          "type_name": "Clay_SizingMinMax",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "percent",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "union",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_SizingAxis",
+      "fields": [
+        {
+          "name": "size",
+          "type_name": "Clay_SizingSize",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "type",
+          "type_name": "Clay__SizingType",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_Sizing",
+      "fields": [
+        {
+          "name": "width",
+          "type_name": "Clay_SizingAxis",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "height",
+          "type_name": "Clay_SizingAxis",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_Padding",
+      "fields": [
+        {
+          "name": "left",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "right",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "top",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "bottom",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_PaddingWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_Padding",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_LayoutConfig",
+      "fields": [
+        {
+          "name": "sizing",
+          "type_name": "Clay_Sizing",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "padding",
+          "type_name": "Clay_Padding",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "childGap",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "childAlignment",
+          "type_name": "Clay_ChildAlignment",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "layoutDirection",
+          "type_name": "Clay_LayoutDirection",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_LayoutConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_LayoutConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "CLAY_LAYOUT_DEFAULT",
+      "type_name": "Clay_LayoutConfig",
+      "type": "IdentifierType"
+    },
+    {
+      "name": "Clay_TextElementConfigWrapMode",
+      "items": [
+        "CLAY_TEXT_WRAP_WORDS",
+        "CLAY_TEXT_WRAP_NEWLINES",
+        "CLAY_TEXT_WRAP_NONE"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_TextAlignment",
+      "items": [
+        "CLAY_TEXT_ALIGN_LEFT",
+        "CLAY_TEXT_ALIGN_CENTER",
+        "CLAY_TEXT_ALIGN_RIGHT"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_TextElementConfig",
+      "fields": [
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        },
+        {
+          "name": "textColor",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "fontId",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "fontSize",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "letterSpacing",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "lineHeight",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "wrapMode",
+          "type_name": "Clay_TextElementConfigWrapMode",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "textAlignment",
+          "type_name": "Clay_TextAlignment",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_TextElementConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_TextElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ImageElementConfig",
+      "fields": [
+        {
+          "node": {
+            "name": "imageData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "imageData",
+          "type_name": "void*",
+          "type": "Ptr"
+        },
+        {
+          "name": "sourceDimensions",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_ImageElementConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_ImageElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_FloatingAttachPointType",
+      "items": [
+        "CLAY_ATTACH_POINT_LEFT_TOP",
+        "CLAY_ATTACH_POINT_LEFT_CENTER",
+        "CLAY_ATTACH_POINT_LEFT_BOTTOM",
+        "CLAY_ATTACH_POINT_CENTER_TOP",
+        "CLAY_ATTACH_POINT_CENTER_CENTER",
+        "CLAY_ATTACH_POINT_CENTER_BOTTOM",
+        "CLAY_ATTACH_POINT_RIGHT_TOP",
+        "CLAY_ATTACH_POINT_RIGHT_CENTER",
+        "CLAY_ATTACH_POINT_RIGHT_BOTTOM"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_FloatingAttachPoints",
+      "fields": [
+        {
+          "name": "element",
+          "type_name": "Clay_FloatingAttachPointType",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "parent",
+          "type_name": "Clay_FloatingAttachPointType",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_PointerCaptureMode",
+      "items": [
+        "CLAY_POINTER_CAPTURE_MODE_CAPTURE",
+        "CLAY_POINTER_CAPTURE_MODE_PASSTHROUGH"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_FloatingAttachToElement",
+      "items": [
+        "CLAY_ATTACH_TO_NONE",
+        "CLAY_ATTACH_TO_PARENT",
+        "CLAY_ATTACH_TO_ELEMENT_WITH_ID",
+        "CLAY_ATTACH_TO_ROOT"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_FloatingElementConfig",
+      "fields": [
+        {
+          "name": "offset",
+          "type_name": "Clay_Vector2",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "expand",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "parentId",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "zIndex",
+          "type_name": "int16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "attachPoints",
+          "type_name": "Clay_FloatingAttachPoints",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "pointerCaptureMode",
+          "type_name": "Clay_PointerCaptureMode",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "attachTo",
+          "type_name": "Clay_FloatingAttachToElement",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_FloatingElementConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_FloatingElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_CustomElementConfig",
+      "fields": [
+        {
+          "node": {
+            "name": "customData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "customData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_CustomElementConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_CustomElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ScrollElementConfig",
+      "fields": [
+        {
+          "name": "horizontal",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "vertical",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_ScrollElementConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_ScrollElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_BorderWidth",
+      "fields": [
+        {
+          "name": "left",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "right",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "top",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "bottom",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "betweenChildren",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_BorderElementConfig",
+      "fields": [
+        {
+          "name": "color",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "width",
+          "type_name": "Clay_BorderWidth",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_BorderElementConfigWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_BorderElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_TextRenderData",
+      "fields": [
+        {
+          "name": "stringContents",
+          "type_name": "Clay_StringSlice",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "textColor",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "fontId",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "fontSize",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "letterSpacing",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "lineHeight",
+          "type_name": "uint16_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_RectangleRenderData",
+      "fields": [
+        {
+          "name": "backgroundColor",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "cornerRadius",
+          "type_name": "Clay_CornerRadius",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ImageRenderData",
+      "fields": [
+        {
+          "name": "backgroundColor",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "cornerRadius",
+          "type_name": "Clay_CornerRadius",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "sourceDimensions",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "imageData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "imageData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_CustomRenderData",
+      "fields": [
+        {
+          "name": "backgroundColor",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "cornerRadius",
+          "type_name": "Clay_CornerRadius",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "customData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "customData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ScrollRenderData",
+      "fields": [
+        {
+          "name": "horizontal",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "vertical",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_BorderRenderData",
+      "fields": [
+        {
+          "name": "color",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "cornerRadius",
+          "type_name": "Clay_CornerRadius",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "width",
+          "type_name": "Clay_BorderWidth",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_RenderData",
+      "fields": [
+        {
+          "name": "rectangle",
+          "type_name": "Clay_RectangleRenderData",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "text",
+          "type_name": "Clay_TextRenderData",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "image",
+          "type_name": "Clay_ImageRenderData",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "custom",
+          "type_name": "Clay_CustomRenderData",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "border",
+          "type_name": "Clay_BorderRenderData",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "scroll",
+          "type_name": "Clay_ScrollRenderData",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "union",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ScrollContainerData",
+      "fields": [
+        {
+          "node": {
+            "name": "scrollPosition",
+            "type_name": "Clay_Vector2",
+            "type": "IdentifierType"
+          },
+          "name": "scrollPosition",
+          "type_name": "Clay_Vector2*",
+          "type": "Ptr"
+        },
+        {
+          "name": "scrollContainerDimensions",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "contentDimensions",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "config",
+          "type_name": "Clay_ScrollElementConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "found",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ElementData",
+      "fields": [
+        {
+          "name": "boundingBox",
+          "type_name": "Clay_BoundingBox",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "found",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_RenderCommandType",
+      "items": [
+        "CLAY_RENDER_COMMAND_TYPE_NONE",
+        "CLAY_RENDER_COMMAND_TYPE_RECTANGLE",
+        "CLAY_RENDER_COMMAND_TYPE_BORDER",
+        "CLAY_RENDER_COMMAND_TYPE_TEXT",
+        "CLAY_RENDER_COMMAND_TYPE_IMAGE",
+        "CLAY_RENDER_COMMAND_TYPE_SCISSOR_START",
+        "CLAY_RENDER_COMMAND_TYPE_SCISSOR_END",
+        "CLAY_RENDER_COMMAND_TYPE_CUSTOM"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_RenderCommand",
+      "fields": [
+        {
+          "name": "boundingBox",
+          "type_name": "Clay_BoundingBox",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "renderData",
+          "type_name": "Clay_RenderData",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        },
+        {
+          "name": "id",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "zIndex",
+          "type_name": "int16_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "commandType",
+          "type_name": "Clay_RenderCommandType",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_RenderCommandArray",
+      "fields": [
+        {
+          "name": "capacity",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "length",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "internalArray",
+            "type_name": "Clay_RenderCommand",
+            "type": "IdentifierType"
+          },
+          "name": "internalArray",
+          "type_name": "Clay_RenderCommand*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_PointerDataInteractionState",
+      "items": [
+        "CLAY_POINTER_DATA_PRESSED_THIS_FRAME",
+        "CLAY_POINTER_DATA_PRESSED",
+        "CLAY_POINTER_DATA_RELEASED_THIS_FRAME",
+        "CLAY_POINTER_DATA_RELEASED"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_PointerData",
+      "fields": [
+        {
+          "name": "position",
+          "type_name": "Clay_Vector2",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "state",
+          "type_name": "Clay_PointerDataInteractionState",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ElementDeclaration",
+      "fields": [
+        {
+          "name": "id",
+          "type_name": "Clay_ElementId",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "layout",
+          "type_name": "Clay_LayoutConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "backgroundColor",
+          "type_name": "Clay_Color",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "cornerRadius",
+          "type_name": "Clay_CornerRadius",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "image",
+          "type_name": "Clay_ImageElementConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "floating",
+          "type_name": "Clay_FloatingElementConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "custom",
+          "type_name": "Clay_CustomElementConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "scroll",
+          "type_name": "Clay_ScrollElementConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "border",
+          "type_name": "Clay_BorderElementConfig",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay__Clay_ElementDeclarationWrapper",
+      "fields": [
+        {
+          "name": "wrapped",
+          "type_name": "Clay_ElementDeclaration",
+          "type": "IdentifierType"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "name": "Clay_ErrorType",
+      "items": [
+        "CLAY_ERROR_TYPE_TEXT_MEASUREMENT_FUNCTION_NOT_PROVIDED",
+        "CLAY_ERROR_TYPE_ARENA_CAPACITY_EXCEEDED",
+        "CLAY_ERROR_TYPE_ELEMENTS_CAPACITY_EXCEEDED",
+        "CLAY_ERROR_TYPE_TEXT_MEASUREMENT_CAPACITY_EXCEEDED",
+        "CLAY_ERROR_TYPE_DUPLICATE_ID",
+        "CLAY_ERROR_TYPE_FLOATING_CONTAINER_PARENT_NOT_FOUND",
+        "CLAY_ERROR_TYPE_PERCENTAGE_OVER_1",
+        "CLAY_ERROR_TYPE_INTERNAL_ERROR"
+      ],
+      "statement": "ctypedef",
+      "type": "Enum"
+    },
+    {
+      "name": "Clay_ErrorData",
+      "fields": [
+        {
+          "name": "errorType",
+          "type_name": "Clay_ErrorType",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "errorText",
+          "type_name": "Clay_String",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "node": {
+        "node": {
+          "return_type": "void",
+          "name": "_Clay_ErrorHandler_Clay_ErrorHandler_errorHandlerFunction_ft",
+          "args": [
+            {
+              "name": "errorText",
+              "type_name": "Clay_ErrorData",
+              "type": "IdentifierType"
+            }
+          ],
+          "type": "Function"
+        },
+        "name": "_Clay_ErrorHandler_Clay_ErrorHandler_errorHandlerFunction_ft",
+        "type_name": "void*",
+        "type": "Ptr"
+      },
+      "type": "Type"
+    },
+    {
+      "name": "Clay_ErrorHandler",
+      "fields": [
+        {
+          "name": "errorHandlerFunction",
+          "type_name": "_Clay_ErrorHandler_Clay_ErrorHandler_errorHandlerFunction_ft",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "kind": "struct",
+      "statement": "ctypedef",
+      "type": "Block"
+    },
+    {
+      "return_type": "uint32_t",
+      "name": "Clay_MinMemorySize",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_Arena",
+      "name": "Clay_CreateArenaWithCapacityAndMemory",
+      "args": [
+        {
+          "name": "capacity",
+          "type_name": "size_t",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "memory",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "memory",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetPointerState",
+      "args": [
+        {
+          "name": "position",
+          "type_name": "Clay_Vector2",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "pointerDown",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_Context*",
+      "name": "Clay_Initialize",
+      "args": [
+        {
+          "name": "arena",
+          "type_name": "Clay_Arena",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "layoutDimensions",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "errorHandler",
+          "type_name": "Clay_ErrorHandler",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_Context*",
+      "name": "Clay_GetCurrentContext",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetCurrentContext",
+      "args": [
+        {
+          "node": {
+            "name": "context",
+            "type_name": "Clay_Context",
+            "type": "IdentifierType"
+          },
+          "name": "context",
+          "type_name": "Clay_Context*",
+          "type": "Ptr"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_UpdateScrollContainers",
+      "args": [
+        {
+          "name": "enableDragScrolling",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "scrollDelta",
+          "type_name": "Clay_Vector2",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "deltaTime",
+          "type_name": "float",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetLayoutDimensions",
+      "args": [
+        {
+          "name": "dimensions",
+          "type_name": "Clay_Dimensions",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_BeginLayout",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_RenderCommandArray",
+      "name": "Clay_EndLayout",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_ElementId",
+      "name": "Clay_GetElementId",
+      "args": [
+        {
+          "name": "idString",
+          "type_name": "Clay_String",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_ElementId",
+      "name": "Clay_GetElementIdWithIndex",
+      "args": [
+        {
+          "name": "idString",
+          "type_name": "Clay_String",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "index",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_ElementData",
+      "name": "Clay_GetElementData",
+      "args": [
+        {
+          "name": "id",
+          "type_name": "Clay_ElementId",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "bool",
+      "name": "Clay_Hovered",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "node": {
+        "node": {
+          "return_type": "void",
+          "name": "_Clay_OnHover_onHoverFunction_ft",
+          "args": [
+            {
+              "name": "elementId",
+              "type_name": "Clay_ElementId",
+              "type": "IdentifierType"
+            },
+            {
+              "name": "pointerData",
+              "type_name": "Clay_PointerData",
+              "type": "IdentifierType"
+            },
+            {
+              "name": "userData",
+              "type_name": "intptr_t",
+              "type": "IdentifierType"
+            }
+          ],
+          "type": "Function"
+        },
+        "name": "_Clay_OnHover_onHoverFunction_ft",
+        "type_name": "void*",
+        "type": "Ptr"
+      },
+      "type": "Type"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_OnHover",
+      "args": [
+        {
+          "name": "onHoverFunction",
+          "type_name": "_Clay_OnHover_onHoverFunction_ft",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "userData",
+          "type_name": "intptr_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "bool",
+      "name": "Clay_PointerOver",
+      "args": [
+        {
+          "name": "elementId",
+          "type_name": "Clay_ElementId",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_ScrollContainerData",
+      "name": "Clay_GetScrollContainerData",
+      "args": [
+        {
+          "name": "id",
+          "type_name": "Clay_ElementId",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "node": {
+        "node": {
+          "return_type": "Clay_Dimensions",
+          "name": "_Clay_SetMeasureTextFunction_measureTextFunction_ft",
+          "args": [
+            {
+              "name": "text",
+              "type_name": "Clay_StringSlice",
+              "type": "IdentifierType"
+            },
+            {
+              "node": {
+                "name": "config",
+                "type_name": "Clay_TextElementConfig",
+                "type": "IdentifierType"
+              },
+              "name": "config",
+              "type_name": "Clay_TextElementConfig*",
+              "type": "Ptr"
+            },
+            {
+              "node": {
+                "name": "userData",
+                "type_name": "void",
+                "type": "IdentifierType"
+              },
+              "name": "userData",
+              "type_name": "void*",
+              "type": "Ptr"
+            }
+          ],
+          "type": "Function"
+        },
+        "name": "_Clay_SetMeasureTextFunction_measureTextFunction_ft",
+        "type_name": "Clay_Dimensions*",
+        "type": "Ptr"
+      },
+      "type": "Type"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetMeasureTextFunction",
+      "args": [
+        {
+          "name": "measureTextFunction",
+          "type_name": "_Clay_SetMeasureTextFunction_measureTextFunction_ft",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "node": {
+        "node": {
+          "return_type": "Clay_Vector2",
+          "name": "_Clay_SetQueryScrollOffsetFunction_queryScrollOffsetFunction_ft",
+          "args": [
+            {
+              "name": "elementId",
+              "type_name": "uint32_t",
+              "type": "IdentifierType"
+            },
+            {
+              "node": {
+                "name": "userData",
+                "type_name": "void",
+                "type": "IdentifierType"
+              },
+              "name": "userData",
+              "type_name": "void*",
+              "type": "Ptr"
+            }
+          ],
+          "type": "Function"
+        },
+        "name": "_Clay_SetQueryScrollOffsetFunction_queryScrollOffsetFunction_ft",
+        "type_name": "Clay_Vector2*",
+        "type": "Ptr"
+      },
+      "type": "Type"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetQueryScrollOffsetFunction",
+      "args": [
+        {
+          "name": "queryScrollOffsetFunction",
+          "type_name": "_Clay_SetQueryScrollOffsetFunction_queryScrollOffsetFunction_ft",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "userData",
+            "type_name": "void",
+            "type": "IdentifierType"
+          },
+          "name": "userData",
+          "type_name": "void*",
+          "type": "Ptr"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_RenderCommand*",
+      "name": "Clay_RenderCommandArray_Get",
+      "args": [
+        {
+          "node": {
+            "name": "array",
+            "type_name": "Clay_RenderCommandArray",
+            "type": "IdentifierType"
+          },
+          "name": "array",
+          "type_name": "Clay_RenderCommandArray*",
+          "type": "Ptr"
+        },
+        {
+          "name": "index",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetDebugModeEnabled",
+      "args": [
+        {
+          "name": "enabled",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "bool",
+      "name": "Clay_IsDebugModeEnabled",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetCullingEnabled",
+      "args": [
+        {
+          "name": "enabled",
+          "type_name": "bool",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "int32_t",
+      "name": "Clay_GetMaxElementCount",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetMaxElementCount",
+      "args": [
+        {
+          "name": "maxElementCount",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "int32_t",
+      "name": "Clay_GetMaxMeasureTextCacheWordCount",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_SetMaxMeasureTextCacheWordCount",
+      "args": [
+        {
+          "name": "maxMeasureTextCacheWordCount",
+          "type_name": "int32_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay_ResetMeasureTextCache",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay__OpenElement",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay__ConfigureOpenElement",
+      "args": [
+        {
+          "name": "config",
+          "type_name": "const Clay_ElementDeclaration",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay__ConfigureOpenElementPtr",
+      "args": [
+        {
+          "node": {
+            "name": "config",
+            "type_name": "const Clay_ElementDeclaration",
+            "type": "IdentifierType"
+          },
+          "name": "config",
+          "type_name": "const Clay_ElementDeclaration*",
+          "type": "Ptr"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay__CloseElement",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_ElementId",
+      "name": "Clay__HashString",
+      "args": [
+        {
+          "name": "key",
+          "type_name": "Clay_String",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "offset",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        },
+        {
+          "name": "seed",
+          "type_name": "uint32_t",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "void",
+      "name": "Clay__OpenTextElement",
+      "args": [
+        {
+          "name": "text",
+          "type_name": "Clay_String",
+          "type": "IdentifierType"
+        },
+        {
+          "node": {
+            "name": "textConfig",
+            "type_name": "Clay_TextElementConfig",
+            "type": "IdentifierType"
+          },
+          "name": "textConfig",
+          "type_name": "Clay_TextElementConfig*",
+          "type": "Ptr"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "Clay_TextElementConfig*",
+      "name": "Clay__StoreTextElementConfig",
+      "args": [
+        {
+          "name": "config",
+          "type_name": "Clay_TextElementConfig",
+          "type": "IdentifierType"
+        }
+      ],
+      "type": "Function"
+    },
+    {
+      "return_type": "uint32_t",
+      "name": "Clay__GetParentElementId",
+      "args": [],
+      "type": "Function"
+    },
+    {
+      "name": "Clay__debugViewHighlightColor",
+      "type_name": "Clay_Color",
+      "type": "IdentifierType"
+    },
+    {
+      "name": "Clay__debugViewWidth",
+      "type_name": "uint32_t",
+      "type": "IdentifierType"
+    }
+  ]
+]
