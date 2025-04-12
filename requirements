@@ -1,0 +1,5 @@
+setuptools
+cython
+build
+wheel
+autopxd2
