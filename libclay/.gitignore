@@ -1,5 +1,1 @@
 *.c
-_clay.json
-_clay.pxd
-_wrapper.pxd
-_wrapper.pyx
