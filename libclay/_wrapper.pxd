@@ -26,15 +26,6 @@ from enum import Enum
 
 
 
-cdef class String:
-    cdef Clay_String __internal
-
-
-
-    @staticmethod
-    cdef String from_c(Clay_String value)
-
-
 cdef class StringSlice:
     cdef Clay_StringSlice __internal
 

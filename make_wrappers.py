@@ -14,6 +14,24 @@ pythonize_re = re.compile(
     re.X,
 )
 
+struct_read_only_fields = [
+    "Clay_ScrollContainerData",
+    "Clay_RenderData",
+    "Clay_RenderCommand",
+    "Clay_RenderCommandArray",
+    "Clay_Arena",
+]
+struct_skip = [
+    "Clay_String",
+    "Clay_ErrorHandler",
+]
+
+
+type_map = {}
+
+MODE_PXD = "pxd"
+MODE_PYX = "pyx"
+
 
 def strip_clay(name):
     name = re.sub("^_*[Cc][Ll][Aa][Yy]_+", "", name)
@@ -33,27 +51,11 @@ def camel_to_snake(name):
 
 def mode_print(mode, sig_impl):
     sig, impl = sig_impl
-    if mode == "pyx":
+    if mode == MODE_PYX:
         return f"{sig}:\n{impl}"
     if "cdef " in sig:
         return f"{sig}\n"
     return ""
-
-
-struct_read_only_fields = [
-    "Clay_ScrollContainerData",
-    "Clay_RenderData",
-    "Clay_RenderCommand",
-    "Clay_RenderCommandArray",
-    "Clay_Arena",
-]
-struct_skip = [
-    "Clay_ErrorHandler",
-
-]
-
-
-type_map = {}
 
 
 class DeclNode:
@@ -176,7 +178,11 @@ class StructNode(DeclNode):
         ]
 
     def render(self, mode):
-        internal_string = f"cdef {self.cname} __internal\n"
+        if mode == MODE_PXD:
+            internal_string = f"cdef {self.cname} __internal\n"
+        else:
+            internal_string = ""
+
         fields_str = "\n".join(field.render(mode) for field in self.fields)
         static_constructor = mode_print(mode, (
             "\n@staticmethod\n"
@@ -232,7 +238,7 @@ class EnumNode(DeclNode):
         return f"{arg_name}.value"
 
     def render(self, mode):
-        if mode == "pxd":
+        if mode == MODE_PXD:
             return ""
 
         name = strip_clay(self.decl["name"])
@@ -277,12 +283,12 @@ def main(defs_json_file, out_path):
         out_pyx_file.write(
             "from libclay._clay cimport *\n"
             "from enum import Enum\n\n\n")
-        out_pyx_file.write("\n\n".join([node.render("pyx") for node in nodes]))
+        out_pyx_file.write("\n\n".join([node.render(MODE_PYX) for node in nodes]))
     with out_path.with_suffix(".pxd").open("w") as out_pxd_file:
         out_pxd_file.write(
             "from libclay._clay cimport *\n"
             "from enum import Enum\n\n\n")
-        out_pxd_file.write("\n\n".join([node.render("pxd") for node in nodes]))
+        out_pxd_file.write("\n\n".join([node.render(MODE_PXD) for node in nodes]))
 
 
 if __name__ == "__main__":

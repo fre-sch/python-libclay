@@ -18,7 +18,7 @@ clean:
 	rm -f libclay/_clay.pxd
 	rm -f libclay/_wrapper.{pyx,pxd}
 
-package: libclay/__init__.pyx libclay/_macro.pyx libclay/_clay.json libclay/_clay.pxd libclay/_wrapper.pyx
+package: setup.py libclay/__init__.py libclay/_macro.pyx libclay/_clay.json libclay/_clay.pxd libclay/_wrapper.pyx
 	python setup.py build_ext --inplace
 
 libclay/_clay.json: make_json.py libclay/clay.h

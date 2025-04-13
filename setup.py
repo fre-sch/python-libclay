@@ -7,12 +7,19 @@ setup(
     ext_modules=cythonize(
         [
             Extension(
-                "libclay",
+                "libclay._wrapper",
                 sources=[
-                    "libclay/*.pyx"
+                    "libclay/_wrapper.pyx",
                 ],
                 define_macros=[("CLAY_IMPLEMENTATION", "1")],
-            )
+            ),
+            Extension(
+                "libclay._macro",
+                sources=[
+                    "libclay/_macro.pyx",
+                ],
+                define_macros=[("CLAY_IMPLEMENTATION", "1")],
+            ),
         ]
     ),
 )

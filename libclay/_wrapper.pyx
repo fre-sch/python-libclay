@@ -91,39 +91,7 @@ class ErrorType(Enum):
     INTERNAL_ERROR = CLAY_ERROR_TYPE_INTERNAL_ERROR
 
 
-cdef class String:
-    cdef Clay_String __internal
-    @property
-    def is_statically_allocated(self):
-        return self.__internal.isStaticallyAllocated
-    @is_statically_allocated.setter
-    def is_statically_allocated(self, value):
-        self.__internal.isStaticallyAllocated = value
-
-    @property
-    def length(self):
-        return self.__internal.length
-    @length.setter
-    def length(self, value):
-        self.__internal.length = value
-
-    @property
-    def chars(self):
-        return self.__internal.chars
-    @chars.setter
-    def chars(self, value):
-        self.__internal.chars = value
-
-    @staticmethod
-    cdef String from_c(Clay_String value):
-        instance = String()
-        instance.__internal = value
-        return instance
-
-
-
 cdef class StringSlice:
-    cdef Clay_StringSlice __internal
     @property
     def length(self):
         return self.__internal.length
@@ -154,7 +122,6 @@ cdef class StringSlice:
 
 
 cdef class Arena:
-    cdef Clay_Arena __internal
     @property
     def next_allocation(self):
         return self.__internal.nextAllocation
@@ -176,7 +143,6 @@ cdef class Arena:
 
 
 cdef class Dimensions:
-    cdef Clay_Dimensions __internal
     @property
     def width(self):
         return self.__internal.width
@@ -200,7 +166,6 @@ cdef class Dimensions:
 
 
 cdef class Vector2:
-    cdef Clay_Vector2 __internal
     @property
     def x(self):
         return self.__internal.x
@@ -224,7 +189,6 @@ cdef class Vector2:
 
 
 cdef class Color:
-    cdef Clay_Color __internal
     @property
     def r(self):
         return self.__internal.r
@@ -262,7 +226,6 @@ cdef class Color:
 
 
 cdef class BoundingBox:
-    cdef Clay_BoundingBox __internal
     @property
     def x(self):
         return self.__internal.x
@@ -300,7 +263,6 @@ cdef class BoundingBox:
 
 
 cdef class ElementId:
-    cdef Clay_ElementId __internal
     @property
     def id(self):
         return self.__internal.id
@@ -323,11 +285,11 @@ cdef class ElementId:
         self.__internal.baseId = value
 
     @property
-    def string_id(self) -> String:
-        return String.from_c(self.__internal.stringId)
+    def string_id(self):
+        return self.__internal.stringId
     @string_id.setter
-    def string_id(self, value: String):
-        self.__internal.stringId = value.__internal
+    def string_id(self, value):
+        self.__internal.stringId = value
 
     @staticmethod
     cdef ElementId from_c(Clay_ElementId value):
@@ -338,7 +300,6 @@ cdef class ElementId:
 
 
 cdef class CornerRadius:
-    cdef Clay_CornerRadius __internal
     @property
     def top_left(self):
         return self.__internal.topLeft
@@ -376,7 +337,6 @@ cdef class CornerRadius:
 
 
 cdef class ChildAlignment:
-    cdef Clay_ChildAlignment __internal
     @property
     def x(self) -> LayoutAlignmentX:
         return LayoutAlignmentX(self.__internal.x)
@@ -400,7 +360,6 @@ cdef class ChildAlignment:
 
 
 cdef class SizingMinMax:
-    cdef Clay_SizingMinMax __internal
     @property
     def min(self):
         return self.__internal.min
@@ -424,7 +383,6 @@ cdef class SizingMinMax:
 
 
 cdef class SizingSize:
-    cdef Clay_SizingSize __internal
     @property
     def min_max(self) -> SizingMinMax:
         return SizingMinMax.from_c(self.__internal.minMax)
@@ -448,7 +406,6 @@ cdef class SizingSize:
 
 
 cdef class SizingAxis:
-    cdef Clay_SizingAxis __internal
     @property
     def size(self) -> SizingSize:
         return SizingSize.from_c(self.__internal.size)
@@ -472,7 +429,6 @@ cdef class SizingAxis:
 
 
 cdef class Sizing:
-    cdef Clay_Sizing __internal
     @property
     def width(self) -> SizingAxis:
         return SizingAxis.from_c(self.__internal.width)
@@ -496,7 +452,6 @@ cdef class Sizing:
 
 
 cdef class Padding:
-    cdef Clay_Padding __internal
     @property
     def left(self):
         return self.__internal.left
@@ -534,7 +489,6 @@ cdef class Padding:
 
 
 cdef class PaddingWrapper:
-    cdef Clay__Clay_PaddingWrapper __internal
     @property
     def wrapped(self) -> Padding:
         return Padding.from_c(self.__internal.wrapped)
@@ -551,7 +505,6 @@ cdef class PaddingWrapper:
 
 
 cdef class LayoutConfig:
-    cdef Clay_LayoutConfig __internal
     @property
     def sizing(self) -> Sizing:
         return Sizing.from_c(self.__internal.sizing)
@@ -596,7 +549,6 @@ cdef class LayoutConfig:
 
 
 cdef class LayoutConfigWrapper:
-    cdef Clay__Clay_LayoutConfigWrapper __internal
     @property
     def wrapped(self) -> LayoutConfig:
         return LayoutConfig.from_c(self.__internal.wrapped)
@@ -613,7 +565,6 @@ cdef class LayoutConfigWrapper:
 
 
 cdef class TextElementConfig:
-    cdef Clay_TextElementConfig __internal
     @property
     def user_data(self):
         return <object> self.__internal.userData
@@ -679,7 +630,6 @@ cdef class TextElementConfig:
 
 
 cdef class TextElementConfigWrapper:
-    cdef Clay__Clay_TextElementConfigWrapper __internal
     @property
     def wrapped(self) -> TextElementConfig:
         return TextElementConfig.from_c(self.__internal.wrapped)
@@ -696,7 +646,6 @@ cdef class TextElementConfigWrapper:
 
 
 cdef class ImageElementConfig:
-    cdef Clay_ImageElementConfig __internal
     @property
     def image_data(self):
         return <object> self.__internal.imageData
@@ -720,7 +669,6 @@ cdef class ImageElementConfig:
 
 
 cdef class ImageElementConfigWrapper:
-    cdef Clay__Clay_ImageElementConfigWrapper __internal
     @property
     def wrapped(self) -> ImageElementConfig:
         return ImageElementConfig.from_c(self.__internal.wrapped)
@@ -737,7 +685,6 @@ cdef class ImageElementConfigWrapper:
 
 
 cdef class FloatingAttachPoints:
-    cdef Clay_FloatingAttachPoints __internal
     @property
     def element(self) -> FloatingAttachPointType:
         return FloatingAttachPointType(self.__internal.element)
@@ -761,7 +708,6 @@ cdef class FloatingAttachPoints:
 
 
 cdef class FloatingElementConfig:
-    cdef Clay_FloatingElementConfig __internal
     @property
     def offset(self) -> Vector2:
         return Vector2.from_c(self.__internal.offset)
@@ -820,7 +766,6 @@ cdef class FloatingElementConfig:
 
 
 cdef class FloatingElementConfigWrapper:
-    cdef Clay__Clay_FloatingElementConfigWrapper __internal
     @property
     def wrapped(self) -> FloatingElementConfig:
         return FloatingElementConfig.from_c(self.__internal.wrapped)
@@ -837,7 +782,6 @@ cdef class FloatingElementConfigWrapper:
 
 
 cdef class CustomElementConfig:
-    cdef Clay_CustomElementConfig __internal
     @property
     def custom_data(self):
         return <object> self.__internal.customData
@@ -854,7 +798,6 @@ cdef class CustomElementConfig:
 
 
 cdef class CustomElementConfigWrapper:
-    cdef Clay__Clay_CustomElementConfigWrapper __internal
     @property
     def wrapped(self) -> CustomElementConfig:
         return CustomElementConfig.from_c(self.__internal.wrapped)
@@ -871,7 +814,6 @@ cdef class CustomElementConfigWrapper:
 
 
 cdef class ScrollElementConfig:
-    cdef Clay_ScrollElementConfig __internal
     @property
     def horizontal(self):
         return self.__internal.horizontal
@@ -895,7 +837,6 @@ cdef class ScrollElementConfig:
 
 
 cdef class ScrollElementConfigWrapper:
-    cdef Clay__Clay_ScrollElementConfigWrapper __internal
     @property
     def wrapped(self) -> ScrollElementConfig:
         return ScrollElementConfig.from_c(self.__internal.wrapped)
@@ -912,7 +853,6 @@ cdef class ScrollElementConfigWrapper:
 
 
 cdef class BorderWidth:
-    cdef Clay_BorderWidth __internal
     @property
     def left(self):
         return self.__internal.left
@@ -957,7 +897,6 @@ cdef class BorderWidth:
 
 
 cdef class BorderElementConfig:
-    cdef Clay_BorderElementConfig __internal
     @property
     def color(self) -> Color:
         return Color.from_c(self.__internal.color)
@@ -981,7 +920,6 @@ cdef class BorderElementConfig:
 
 
 cdef class BorderElementConfigWrapper:
-    cdef Clay__Clay_BorderElementConfigWrapper __internal
     @property
     def wrapped(self) -> BorderElementConfig:
         return BorderElementConfig.from_c(self.__internal.wrapped)
@@ -998,7 +936,6 @@ cdef class BorderElementConfigWrapper:
 
 
 cdef class TextRenderData:
-    cdef Clay_TextRenderData __internal
     @property
     def string_contents(self) -> StringSlice:
         return StringSlice.from_c(self.__internal.stringContents)
@@ -1050,7 +987,6 @@ cdef class TextRenderData:
 
 
 cdef class RectangleRenderData:
-    cdef Clay_RectangleRenderData __internal
     @property
     def background_color(self) -> Color:
         return Color.from_c(self.__internal.backgroundColor)
@@ -1074,7 +1010,6 @@ cdef class RectangleRenderData:
 
 
 cdef class ImageRenderData:
-    cdef Clay_ImageRenderData __internal
     @property
     def background_color(self) -> Color:
         return Color.from_c(self.__internal.backgroundColor)
@@ -1112,7 +1047,6 @@ cdef class ImageRenderData:
 
 
 cdef class CustomRenderData:
-    cdef Clay_CustomRenderData __internal
     @property
     def background_color(self) -> Color:
         return Color.from_c(self.__internal.backgroundColor)
@@ -1143,7 +1077,6 @@ cdef class CustomRenderData:
 
 
 cdef class ScrollRenderData:
-    cdef Clay_ScrollRenderData __internal
     @property
     def horizontal(self):
         return self.__internal.horizontal
@@ -1167,7 +1100,6 @@ cdef class ScrollRenderData:
 
 
 cdef class BorderRenderData:
-    cdef Clay_BorderRenderData __internal
     @property
     def color(self) -> Color:
         return Color.from_c(self.__internal.color)
@@ -1198,7 +1130,6 @@ cdef class BorderRenderData:
 
 
 cdef class RenderData:
-    cdef Clay_RenderData __internal
     @property
     def rectangle(self) -> RectangleRenderData:
         return RectangleRenderData.from_c(self.__internal.rectangle)
@@ -1232,7 +1163,6 @@ cdef class RenderData:
 
 
 cdef class ScrollContainerData:
-    cdef Clay_ScrollContainerData __internal
     @property
     def scroll_position(self) -> Vector2:
         return Vector2.from_c(self.__internal.scrollPosition[0])
@@ -1262,7 +1192,6 @@ cdef class ScrollContainerData:
 
 
 cdef class ElementData:
-    cdef Clay_ElementData __internal
     @property
     def bounding_box(self) -> BoundingBox:
         return BoundingBox.from_c(self.__internal.boundingBox)
@@ -1286,7 +1215,6 @@ cdef class ElementData:
 
 
 cdef class RenderCommand:
-    cdef Clay_RenderCommand __internal
     @property
     def bounding_box(self) -> BoundingBox:
         return BoundingBox.from_c(self.__internal.boundingBox)
@@ -1320,7 +1248,6 @@ cdef class RenderCommand:
 
 
 cdef class RenderCommandArray:
-    cdef Clay_RenderCommandArray __internal
     @property
     def capacity(self):
         return self.__internal.capacity
@@ -1342,7 +1269,6 @@ cdef class RenderCommandArray:
 
 
 cdef class PointerData:
-    cdef Clay_PointerData __internal
     @property
     def position(self) -> Vector2:
         return Vector2.from_c(self.__internal.position)
@@ -1366,7 +1292,6 @@ cdef class PointerData:
 
 
 cdef class ElementDeclaration:
-    cdef Clay_ElementDeclaration __internal
     @property
     def id(self) -> ElementId:
         return ElementId.from_c(self.__internal.id)
@@ -1446,7 +1371,6 @@ cdef class ElementDeclaration:
 
 
 cdef class ElementDeclarationWrapper:
-    cdef Clay__Clay_ElementDeclarationWrapper __internal
     @property
     def wrapped(self) -> ElementDeclaration:
         return ElementDeclaration.from_c(self.__internal.wrapped)
@@ -1463,7 +1387,6 @@ cdef class ElementDeclarationWrapper:
 
 
 cdef class ErrorData:
-    cdef Clay_ErrorData __internal
     @property
     def error_type(self) -> ErrorType:
         return ErrorType(self.__internal.errorType)
@@ -1472,11 +1395,11 @@ cdef class ErrorData:
         self.__internal.errorType = value.value
 
     @property
-    def error_text(self) -> String:
-        return String.from_c(self.__internal.errorText)
+    def error_text(self):
+        return self.__internal.errorText
     @error_text.setter
-    def error_text(self, value: String):
-        self.__internal.errorText = value.__internal
+    def error_text(self, value):
+        self.__internal.errorText = value
 
     @property
     def user_data(self):
