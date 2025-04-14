@@ -2,6 +2,8 @@ from cpython.mem cimport PyMem_Malloc
 from libc.stdio cimport printf
 
 from libclay._clay cimport (
+    Clay_String,
+    Clay_GetElementId,
     Clay_MinMemorySize,
     Clay_CreateArenaWithCapacityAndMemory,
     Clay_Dimensions,
@@ -31,8 +33,22 @@ cdef class Element:
     def __exit__(self, exc_type, exc_val, exc_tb):
         Clay__CloseElement()
 
+    @staticmethod
+    def open(element_declaration: ElementDeclaration) -> None:
+        Clay__OpenElement()
+        Clay__ConfigureOpenElement(element_declaration.__internal)
 
-cdef class MainContext:
+    @staticmethod
+    def close() -> None:
+        Clay__CloseElement()
+
+    @staticmethod
+    def new_id(id_string: str) -> ElementId:
+        cdef Clay_String clay_string = clay_string_from_py(id_string)
+        return ElementId.from_c(Clay_GetElementId(clay_string))
+
+
+cdef class Layout:
     cdef Clay clay
 
     def __init__(self, clay):
@@ -46,10 +62,21 @@ cdef class MainContext:
         array = Clay_EndLayout()
         self.clay.render_commands = RenderCommandArray.from_c(array)
 
+    @staticmethod
+    def set_dimensions(width: float, height: float) -> None:
+        Clay_SetLayoutDimensions(Clay_Dimensions(width, height))
+
+    def begin(self) -> None:
+        Clay_BeginLayout()
+
+    def end(self) -> RenderCommandArray:
+        cdef Clay_RenderCommandArray array
+        array = Clay_EndLayout()
+        return RenderCommandArray.from_c(array)
 
 
 cdef class Clay:
-    cdef Arena arena
+    cdef public Arena arena
     cdef public RenderCommandArray render_commands
 
     cdef void* __context
@@ -66,8 +93,5 @@ cdef class Clay:
             Clay_ErrorHandler(NULL, NULL)
         )
 
-    def begin(self):
-        return MainContext(self)
-
-    def set_layout_dimensions(self, float width, float height):
-        Clay_SetLayoutDimensions(Clay_Dimensions(width, height))
+    def layout(self) -> Layout:
+        return Layout(self)

@@ -2,6 +2,8 @@ from libclay._clay cimport *
 from enum import Enum
 
 
+cdef str clay_string_to_py(Clay_String value)
+cdef Clay_String clay_string_from_py(str value)
 
 
 
@@ -24,6 +26,28 @@ from enum import Enum
 
 
 
+
+
+
+
+cdef class SizingSize:
+    cdef Clay_SizingSize __internal
+
+
+    @staticmethod
+    cdef SizingSize from_c(Clay_SizingSize value)
+
+
+cdef class RenderData:
+    cdef Clay_RenderData __internal
+
+
+
+
+
+
+    @staticmethod
+    cdef RenderData from_c(Clay_RenderData value)
 
 
 cdef class StringSlice:
@@ -114,14 +138,6 @@ cdef class SizingMinMax:
 
     @staticmethod
     cdef SizingMinMax from_c(Clay_SizingMinMax value)
-
-
-cdef class SizingSize:
-    cdef Clay_SizingSize __internal
-
-
-    @staticmethod
-    cdef SizingSize from_c(Clay_SizingSize value)
 
 
 cdef class SizingAxis:
@@ -348,18 +364,6 @@ cdef class BorderRenderData:
 
     @staticmethod
     cdef BorderRenderData from_c(Clay_BorderRenderData value)
-
-
-cdef class RenderData:
-    cdef Clay_RenderData __internal
-
-
-
-
-
-
-    @staticmethod
-    cdef RenderData from_c(Clay_RenderData value)
 
 
 cdef class ScrollContainerData:

@@ -20,6 +20,8 @@ struct_read_only_fields = [
     "Clay_RenderCommand",
     "Clay_RenderCommandArray",
     "Clay_Arena",
+    "Clay_ElementId",
+    "Clay_ErrorData",
 ]
 struct_skip = [
     "Clay_String",
@@ -59,7 +61,7 @@ def mode_print(mode, sig_impl):
 
 
 class DeclNode:
-    prio = -1
+    prio = 10000
 
     def __init__(self, decl):
         self.decl = decl
@@ -82,6 +84,35 @@ class DeclNode:
         if is_ptr:
             return f"&({arg_name}.__internal)"
         return f"{arg_name}.__internal"
+
+    def render(self, mode):
+        return ""
+
+
+class ClayStringNode(DeclNode):
+    prio = 0
+    cname = "Clay_String"
+    pname = "str"
+
+    def __init__(self):
+        super().__init__(None)
+
+    def ctor_str(self, arg_name, is_ptr):
+        return f"clay_string_to_py({arg_name})"
+
+    def cvalue_str(self, arg_name, is_ptr):
+        return f'{arg_name} # Clay_String'
+
+    def render(self, mode):
+        return mode_print(mode, (
+            "cdef str clay_string_to_py(Clay_String value)",
+            "    py_bytes = <bytes> value.chars[:value.length]\n"
+            "    return py_bytes.decode(\"UTF-8\")\n\n"
+        )) + mode_print(mode, (
+            "cdef Clay_String clay_string_from_py(str value)",
+            "    py_bytes = value.encode(\"UTF-8\")\n"
+            "    return Clay_String(isStaticallyAllocated=False, length=len(py_bytes), chars=py_bytes)\n\n"
+        ))
 
 
 class FieldNode(DeclNode):
@@ -168,7 +199,7 @@ class FieldNode(DeclNode):
 
 
 class StructNode(DeclNode):
-    prio = 0
+    prio = 2
 
     @property
     def fields(self):
@@ -197,11 +228,11 @@ class StructNode(DeclNode):
 
 
 class UnionNode(StructNode):
-    pass
+    prio = 1
 
 
 class EnumNode(DeclNode):
-    prio = 1
+    prio = 0
 
     base_item_prefixes = [
         "CLAY_ATTACH_POINT_",
@@ -273,12 +304,14 @@ import pathlib
 def main(defs_json_file, out_path):
     decl_stacks = json.load(defs_json_file)
 
-    nodes = []
+    nodes = [
+        ClayStringNode()
+    ]
     for stack in decl_stacks:
         for decl in stack:
             if (node := visit(decl)) is not None:
                 nodes.append(node)
-    nodes.sort(key=lambda it: it.prio, reverse=True)
+    nodes.sort(key=lambda it: it.prio)
     with out_path.with_suffix(".pyx").open("w") as out_pyx_file:
         out_pyx_file.write(
             "from libclay._clay cimport *\n"

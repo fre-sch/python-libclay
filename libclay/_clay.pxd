@@ -1,7 +1,7 @@
 from libc.stdint cimport uint8_t, int32_t, uintptr_t, uint32_t, uint16_t, int16_t, intptr_t
 
 cdef extern from "clay.h":
-    ctypedef int bool
+    ctypedef bint bool
     ctypedef void* Clay_Context
 
     uint8_t CLAY__ELEMENT_DEFINITION_LATCH

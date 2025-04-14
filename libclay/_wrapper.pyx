@@ -2,6 +2,16 @@ from libclay._clay cimport *
 from enum import Enum
 
 
+cdef str clay_string_to_py(Clay_String value):
+    py_bytes = <bytes> value.chars[:value.length]
+    return py_bytes.decode("UTF-8")
+
+cdef Clay_String clay_string_from_py(str value):
+    py_bytes = value.encode("UTF-8")
+    return Clay_String(isStaticallyAllocated=True, length=len(py_bytes), chars=py_bytes)
+
+
+
 class LayoutDirection(Enum):
     LEFT_TO_RIGHT = CLAY_LEFT_TO_RIGHT
     TOP_TO_BOTTOM = CLAY_TOP_TO_BOTTOM
@@ -89,6 +99,62 @@ class ErrorType(Enum):
     FLOATING_CONTAINER_PARENT_NOT_FOUND = CLAY_ERROR_TYPE_FLOATING_CONTAINER_PARENT_NOT_FOUND
     PERCENTAGE_OVER_1 = CLAY_ERROR_TYPE_PERCENTAGE_OVER_1
     INTERNAL_ERROR = CLAY_ERROR_TYPE_INTERNAL_ERROR
+
+
+cdef class SizingSize:
+    @property
+    def min_max(self) -> SizingMinMax:
+        return SizingMinMax.from_c(self.__internal.minMax)
+    @min_max.setter
+    def min_max(self, value: SizingMinMax):
+        self.__internal.minMax = value.__internal
+
+    @property
+    def percent(self):
+        return self.__internal.percent
+    @percent.setter
+    def percent(self, value):
+        self.__internal.percent = value
+
+    @staticmethod
+    cdef SizingSize from_c(Clay_SizingSize value):
+        instance = SizingSize()
+        instance.__internal = value
+        return instance
+
+
+
+cdef class RenderData:
+    @property
+    def rectangle(self) -> RectangleRenderData:
+        return RectangleRenderData.from_c(self.__internal.rectangle)
+
+    @property
+    def text(self) -> TextRenderData:
+        return TextRenderData.from_c(self.__internal.text)
+
+    @property
+    def image(self) -> ImageRenderData:
+        return ImageRenderData.from_c(self.__internal.image)
+
+    @property
+    def custom(self) -> CustomRenderData:
+        return CustomRenderData.from_c(self.__internal.custom)
+
+    @property
+    def border(self) -> BorderRenderData:
+        return BorderRenderData.from_c(self.__internal.border)
+
+    @property
+    def scroll(self) -> ScrollRenderData:
+        return ScrollRenderData.from_c(self.__internal.scroll)
+
+    @staticmethod
+    cdef RenderData from_c(Clay_RenderData value):
+        instance = RenderData()
+        instance.__internal = value
+        return instance
+
 
 
 cdef class StringSlice:
@@ -266,30 +332,18 @@ cdef class ElementId:
     @property
     def id(self):
         return self.__internal.id
-    @id.setter
-    def id(self, value):
-        self.__internal.id = value
 
     @property
     def offset(self):
         return self.__internal.offset
-    @offset.setter
-    def offset(self, value):
-        self.__internal.offset = value
 
     @property
     def base_id(self):
         return self.__internal.baseId
-    @base_id.setter
-    def base_id(self, value):
-        self.__internal.baseId = value
 
     @property
-    def string_id(self):
-        return self.__internal.stringId
-    @string_id.setter
-    def string_id(self, value):
-        self.__internal.stringId = value
+    def string_id(self) -> str:
+        return clay_string_to_py(self.__internal.stringId)
 
     @staticmethod
     cdef ElementId from_c(Clay_ElementId value):
@@ -377,29 +431,6 @@ cdef class SizingMinMax:
     @staticmethod
     cdef SizingMinMax from_c(Clay_SizingMinMax value):
         instance = SizingMinMax()
-        instance.__internal = value
-        return instance
-
-
-
-cdef class SizingSize:
-    @property
-    def min_max(self) -> SizingMinMax:
-        return SizingMinMax.from_c(self.__internal.minMax)
-    @min_max.setter
-    def min_max(self, value: SizingMinMax):
-        self.__internal.minMax = value.__internal
-
-    @property
-    def percent(self):
-        return self.__internal.percent
-    @percent.setter
-    def percent(self, value):
-        self.__internal.percent = value
-
-    @staticmethod
-    cdef SizingSize from_c(Clay_SizingSize value):
-        instance = SizingSize()
         instance.__internal = value
         return instance
 
@@ -1129,39 +1160,6 @@ cdef class BorderRenderData:
 
 
 
-cdef class RenderData:
-    @property
-    def rectangle(self) -> RectangleRenderData:
-        return RectangleRenderData.from_c(self.__internal.rectangle)
-
-    @property
-    def text(self) -> TextRenderData:
-        return TextRenderData.from_c(self.__internal.text)
-
-    @property
-    def image(self) -> ImageRenderData:
-        return ImageRenderData.from_c(self.__internal.image)
-
-    @property
-    def custom(self) -> CustomRenderData:
-        return CustomRenderData.from_c(self.__internal.custom)
-
-    @property
-    def border(self) -> BorderRenderData:
-        return BorderRenderData.from_c(self.__internal.border)
-
-    @property
-    def scroll(self) -> ScrollRenderData:
-        return ScrollRenderData.from_c(self.__internal.scroll)
-
-    @staticmethod
-    cdef RenderData from_c(Clay_RenderData value):
-        instance = RenderData()
-        instance.__internal = value
-        return instance
-
-
-
 cdef class ScrollContainerData:
     @property
     def scroll_position(self) -> Vector2:
@@ -1390,23 +1388,14 @@ cdef class ErrorData:
     @property
     def error_type(self) -> ErrorType:
         return ErrorType(self.__internal.errorType)
-    @error_type.setter
-    def error_type(self, value: ErrorType):
-        self.__internal.errorType = value.value
 
     @property
-    def error_text(self):
-        return self.__internal.errorText
-    @error_text.setter
-    def error_text(self, value):
-        self.__internal.errorText = value
+    def error_text(self) -> str:
+        return clay_string_to_py(self.__internal.errorText)
 
     @property
     def user_data(self):
         return <object> self.__internal.userData
-    @user_data.setter
-    def user_data(self, object value):
-        self.__internal.userData = <void*> value
 
     @staticmethod
     cdef ErrorData from_c(Clay_ErrorData value):
