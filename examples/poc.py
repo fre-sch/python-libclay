@@ -2,19 +2,19 @@ from libclay import Clay, Element, ElementDeclaration, SizingAxis, SizingType
 
 clay = Clay((800, 600))
 
-with clay.begin():
+with clay.layout():
     with Element(ElementDeclaration(
-
+        id_=Element.new_id("first"),
     )):
         pass
     with Element(ElementDeclaration(
-
+        id_=Element.new_id("second"),
     )):
         pass
 
 print("length", clay.render_commands.length)
 print("capacity", clay.render_commands.capacity)
-print(len(clay.render_commands))
+
 
 axis = SizingAxis()
-print(axis.type.name)
+print(axis.type_.name)

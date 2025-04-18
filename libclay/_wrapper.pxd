@@ -2,10 +2,6 @@ from libclay._clay cimport *
 from enum import Enum
 
 
-cdef str clay_string_to_py(Clay_String value)
-cdef Clay_String clay_string_from_py(str value)
-
-
 
 
 
@@ -31,16 +27,14 @@ cdef Clay_String clay_string_from_py(str value)
 
 
 cdef class SizingSize:
-    cdef Clay_SizingSize __internal
-
+    cdef Clay_SizingSize _cvalue
 
     @staticmethod
     cdef SizingSize from_c(Clay_SizingSize value)
 
 
 cdef class RenderData:
-    cdef Clay_RenderData __internal
-
+    cdef Clay_RenderData _cvalue
 
 
 
@@ -50,9 +44,18 @@ cdef class RenderData:
     cdef RenderData from_c(Clay_RenderData value)
 
 
-cdef class StringSlice:
-    cdef Clay_StringSlice __internal
+cdef class ClayString:
+    cdef Clay_String _cvalue
+    cdef bytes _bytes
+    @staticmethod
+    cdef ClayString from_str(str value)
 
+    @staticmethod
+    cdef ClayString from_c(Clay_String value)
+
+
+cdef class StringSlice:
+    cdef Clay_StringSlice _cvalue
 
 
     @staticmethod
@@ -60,8 +63,7 @@ cdef class StringSlice:
 
 
 cdef class Arena:
-    cdef Clay_Arena __internal
-
+    cdef Clay_Arena _cvalue
 
 
     @staticmethod
@@ -69,24 +71,21 @@ cdef class Arena:
 
 
 cdef class Dimensions:
-    cdef Clay_Dimensions __internal
-
+    cdef Clay_Dimensions _cvalue
 
     @staticmethod
     cdef Dimensions from_c(Clay_Dimensions value)
 
 
 cdef class Vector2:
-    cdef Clay_Vector2 __internal
-
+    cdef Clay_Vector2 _cvalue
 
     @staticmethod
     cdef Vector2 from_c(Clay_Vector2 value)
 
 
 cdef class Color:
-    cdef Clay_Color __internal
-
+    cdef Clay_Color _cvalue
 
 
 
@@ -95,8 +94,7 @@ cdef class Color:
 
 
 cdef class BoundingBox:
-    cdef Clay_BoundingBox __internal
-
+    cdef Clay_BoundingBox _cvalue
 
 
 
@@ -105,8 +103,7 @@ cdef class BoundingBox:
 
 
 cdef class ElementId:
-    cdef Clay_ElementId __internal
-
+    cdef Clay_ElementId _cvalue
 
 
 
@@ -115,8 +112,7 @@ cdef class ElementId:
 
 
 cdef class CornerRadius:
-    cdef Clay_CornerRadius __internal
-
+    cdef Clay_CornerRadius _cvalue
 
 
 
@@ -125,40 +121,35 @@ cdef class CornerRadius:
 
 
 cdef class ChildAlignment:
-    cdef Clay_ChildAlignment __internal
-
+    cdef Clay_ChildAlignment _cvalue
 
     @staticmethod
     cdef ChildAlignment from_c(Clay_ChildAlignment value)
 
 
 cdef class SizingMinMax:
-    cdef Clay_SizingMinMax __internal
-
+    cdef Clay_SizingMinMax _cvalue
 
     @staticmethod
     cdef SizingMinMax from_c(Clay_SizingMinMax value)
 
 
 cdef class SizingAxis:
-    cdef Clay_SizingAxis __internal
-
+    cdef Clay_SizingAxis _cvalue
 
     @staticmethod
     cdef SizingAxis from_c(Clay_SizingAxis value)
 
 
 cdef class Sizing:
-    cdef Clay_Sizing __internal
-
+    cdef Clay_Sizing _cvalue
 
     @staticmethod
     cdef Sizing from_c(Clay_Sizing value)
 
 
 cdef class Padding:
-    cdef Clay_Padding __internal
-
+    cdef Clay_Padding _cvalue
 
 
 
@@ -166,16 +157,8 @@ cdef class Padding:
     cdef Padding from_c(Clay_Padding value)
 
 
-cdef class PaddingWrapper:
-    cdef Clay__Clay_PaddingWrapper __internal
-
-    @staticmethod
-    cdef PaddingWrapper from_c(Clay__Clay_PaddingWrapper value)
-
-
 cdef class LayoutConfig:
-    cdef Clay_LayoutConfig __internal
-
+    cdef Clay_LayoutConfig _cvalue
 
 
 
@@ -184,16 +167,8 @@ cdef class LayoutConfig:
     cdef LayoutConfig from_c(Clay_LayoutConfig value)
 
 
-cdef class LayoutConfigWrapper:
-    cdef Clay__Clay_LayoutConfigWrapper __internal
-
-    @staticmethod
-    cdef LayoutConfigWrapper from_c(Clay__Clay_LayoutConfigWrapper value)
-
-
 cdef class TextElementConfig:
-    cdef Clay_TextElementConfig __internal
-
+    cdef Clay_TextElementConfig _cvalue
 
 
 
@@ -205,39 +180,22 @@ cdef class TextElementConfig:
     cdef TextElementConfig from_c(Clay_TextElementConfig value)
 
 
-cdef class TextElementConfigWrapper:
-    cdef Clay__Clay_TextElementConfigWrapper __internal
-
-    @staticmethod
-    cdef TextElementConfigWrapper from_c(Clay__Clay_TextElementConfigWrapper value)
-
-
 cdef class ImageElementConfig:
-    cdef Clay_ImageElementConfig __internal
-
+    cdef Clay_ImageElementConfig _cvalue
 
     @staticmethod
     cdef ImageElementConfig from_c(Clay_ImageElementConfig value)
 
 
-cdef class ImageElementConfigWrapper:
-    cdef Clay__Clay_ImageElementConfigWrapper __internal
-
-    @staticmethod
-    cdef ImageElementConfigWrapper from_c(Clay__Clay_ImageElementConfigWrapper value)
-
-
 cdef class FloatingAttachPoints:
-    cdef Clay_FloatingAttachPoints __internal
-
+    cdef Clay_FloatingAttachPoints _cvalue
 
     @staticmethod
     cdef FloatingAttachPoints from_c(Clay_FloatingAttachPoints value)
 
 
 cdef class FloatingElementConfig:
-    cdef Clay_FloatingElementConfig __internal
-
+    cdef Clay_FloatingElementConfig _cvalue
 
 
 
@@ -248,45 +206,21 @@ cdef class FloatingElementConfig:
     cdef FloatingElementConfig from_c(Clay_FloatingElementConfig value)
 
 
-cdef class FloatingElementConfigWrapper:
-    cdef Clay__Clay_FloatingElementConfigWrapper __internal
-
-    @staticmethod
-    cdef FloatingElementConfigWrapper from_c(Clay__Clay_FloatingElementConfigWrapper value)
-
-
 cdef class CustomElementConfig:
-    cdef Clay_CustomElementConfig __internal
-
+    cdef Clay_CustomElementConfig _cvalue
     @staticmethod
     cdef CustomElementConfig from_c(Clay_CustomElementConfig value)
 
 
-cdef class CustomElementConfigWrapper:
-    cdef Clay__Clay_CustomElementConfigWrapper __internal
-
-    @staticmethod
-    cdef CustomElementConfigWrapper from_c(Clay__Clay_CustomElementConfigWrapper value)
-
-
 cdef class ScrollElementConfig:
-    cdef Clay_ScrollElementConfig __internal
-
+    cdef Clay_ScrollElementConfig _cvalue
 
     @staticmethod
     cdef ScrollElementConfig from_c(Clay_ScrollElementConfig value)
 
 
-cdef class ScrollElementConfigWrapper:
-    cdef Clay__Clay_ScrollElementConfigWrapper __internal
-
-    @staticmethod
-    cdef ScrollElementConfigWrapper from_c(Clay__Clay_ScrollElementConfigWrapper value)
-
-
 cdef class BorderWidth:
-    cdef Clay_BorderWidth __internal
-
+    cdef Clay_BorderWidth _cvalue
 
 
 
@@ -296,23 +230,14 @@ cdef class BorderWidth:
 
 
 cdef class BorderElementConfig:
-    cdef Clay_BorderElementConfig __internal
-
+    cdef Clay_BorderElementConfig _cvalue
 
     @staticmethod
     cdef BorderElementConfig from_c(Clay_BorderElementConfig value)
 
 
-cdef class BorderElementConfigWrapper:
-    cdef Clay__Clay_BorderElementConfigWrapper __internal
-
-    @staticmethod
-    cdef BorderElementConfigWrapper from_c(Clay__Clay_BorderElementConfigWrapper value)
-
-
 cdef class TextRenderData:
-    cdef Clay_TextRenderData __internal
-
+    cdef Clay_TextRenderData _cvalue
 
 
 
@@ -323,16 +248,14 @@ cdef class TextRenderData:
 
 
 cdef class RectangleRenderData:
-    cdef Clay_RectangleRenderData __internal
-
+    cdef Clay_RectangleRenderData _cvalue
 
     @staticmethod
     cdef RectangleRenderData from_c(Clay_RectangleRenderData value)
 
 
 cdef class ImageRenderData:
-    cdef Clay_ImageRenderData __internal
-
+    cdef Clay_ImageRenderData _cvalue
 
 
 
@@ -341,8 +264,7 @@ cdef class ImageRenderData:
 
 
 cdef class CustomRenderData:
-    cdef Clay_CustomRenderData __internal
-
+    cdef Clay_CustomRenderData _cvalue
 
 
     @staticmethod
@@ -350,16 +272,14 @@ cdef class CustomRenderData:
 
 
 cdef class ScrollRenderData:
-    cdef Clay_ScrollRenderData __internal
-
+    cdef Clay_ScrollRenderData _cvalue
 
     @staticmethod
     cdef ScrollRenderData from_c(Clay_ScrollRenderData value)
 
 
 cdef class BorderRenderData:
-    cdef Clay_BorderRenderData __internal
-
+    cdef Clay_BorderRenderData _cvalue
 
 
     @staticmethod
@@ -367,8 +287,7 @@ cdef class BorderRenderData:
 
 
 cdef class ScrollContainerData:
-    cdef Clay_ScrollContainerData __internal
-
+    cdef Clay_ScrollContainerData _cvalue
 
 
 
@@ -378,16 +297,14 @@ cdef class ScrollContainerData:
 
 
 cdef class ElementData:
-    cdef Clay_ElementData __internal
-
+    cdef Clay_ElementData _cvalue
 
     @staticmethod
     cdef ElementData from_c(Clay_ElementData value)
 
 
 cdef class RenderCommand:
-    cdef Clay_RenderCommand __internal
-
+    cdef Clay_RenderCommand _cvalue
 
 
 
@@ -398,8 +315,7 @@ cdef class RenderCommand:
 
 
 cdef class RenderCommandArray:
-    cdef Clay_RenderCommandArray __internal
-
+    cdef Clay_RenderCommandArray _cvalue
 
 
     @staticmethod
@@ -407,16 +323,14 @@ cdef class RenderCommandArray:
 
 
 cdef class PointerData:
-    cdef Clay_PointerData __internal
-
+    cdef Clay_PointerData _cvalue
 
     @staticmethod
     cdef PointerData from_c(Clay_PointerData value)
 
 
 cdef class ElementDeclaration:
-    cdef Clay_ElementDeclaration __internal
-
+    cdef Clay_ElementDeclaration _cvalue
 
 
 
@@ -430,17 +344,11 @@ cdef class ElementDeclaration:
     cdef ElementDeclaration from_c(Clay_ElementDeclaration value)
 
 
-cdef class ElementDeclarationWrapper:
-    cdef Clay__Clay_ElementDeclarationWrapper __internal
-
-    @staticmethod
-    cdef ElementDeclarationWrapper from_c(Clay__Clay_ElementDeclarationWrapper value)
-
-
 cdef class ErrorData:
-    cdef Clay_ErrorData __internal
-
+    cdef Clay_ErrorData _cvalue
 
 
     @staticmethod
     cdef ErrorData from_c(Clay_ErrorData value)
+
+

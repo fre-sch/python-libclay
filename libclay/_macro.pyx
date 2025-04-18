@@ -2,7 +2,6 @@ from cpython.mem cimport PyMem_Malloc
 from libc.stdio cimport printf
 
 from libclay._clay cimport (
-    Clay_String,
     Clay_GetElementId,
     Clay_MinMemorySize,
     Clay_CreateArenaWithCapacityAndMemory,
@@ -14,29 +13,26 @@ from libclay._clay cimport (
     Clay__OpenElement,
     Clay__ConfigureOpenElement,
     Clay__CloseElement,
-    Clay_ElementDeclaration,
     Clay_RenderCommandArray,
 )
 from libclay._wrapper cimport *
 
 
-cdef class Element:
-    cdef ElementDeclaration element_declaration
+class Element:
 
     def __init__(self, ElementDeclaration element_declaration):
         self.element_declaration = element_declaration
 
     def __enter__(self):
-        Clay__OpenElement()
-        Clay__ConfigureOpenElement(self.element_declaration.__internal)
+        self.open(self.element_declaration)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        Clay__CloseElement()
+        self.close()
 
     @staticmethod
     def open(element_declaration: ElementDeclaration) -> None:
         Clay__OpenElement()
-        Clay__ConfigureOpenElement(element_declaration.__internal)
+        Clay__ConfigureOpenElement(element_declaration._cvalue)
 
     @staticmethod
     def close() -> None:
@@ -44,8 +40,9 @@ cdef class Element:
 
     @staticmethod
     def new_id(id_string: str) -> ElementId:
-        cdef Clay_String clay_string = clay_string_from_py(id_string)
-        return ElementId.from_c(Clay_GetElementId(clay_string))
+        cdef ClayString string = ClayString.from_str(id_string)
+        cdef Clay_ElementId clay_element_id = Clay_GetElementId(string._cvalue)
+        return ElementId.from_c(clay_element_id)
 
 
 cdef class Layout:
@@ -55,15 +52,12 @@ cdef class Layout:
         self.clay = clay
 
     def __enter__(self):
-        Clay_BeginLayout()
+        self.begin()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        cdef Clay_RenderCommandArray array
-        array = Clay_EndLayout()
-        self.clay.render_commands = RenderCommandArray.from_c(array)
+        self.clay.render_commands = self.end()
 
-    @staticmethod
-    def set_dimensions(width: float, height: float) -> None:
+    def set_dimensions(self, width: float, height: float) -> None:
         Clay_SetLayoutDimensions(Clay_Dimensions(width, height))
 
     def begin(self) -> None:
@@ -72,6 +66,7 @@ cdef class Layout:
     def end(self) -> RenderCommandArray:
         cdef Clay_RenderCommandArray array
         array = Clay_EndLayout()
+        print(array)
         return RenderCommandArray.from_c(array)
 
 
@@ -88,7 +83,7 @@ cdef class Clay:
             Clay_CreateArenaWithCapacityAndMemory(memory_size, memory)
         )
         self.__context = Clay_Initialize(
-            self.arena.__internal,
+            self.arena._cvalue,
             Clay_Dimensions(dimensions[0], dimensions[1]),
             Clay_ErrorHandler(NULL, NULL)
         )

@@ -2,6 +2,8 @@ import json
 import re
 from dataclasses import dataclass
 from textwrap import indent
+from fnmatch import fnmatchcase
+
 
 pythonize_re = re.compile(
     r"""
@@ -14,7 +16,8 @@ pythonize_re = re.compile(
     re.X,
 )
 
-struct_read_only_fields = [
+struct_read_only = [
+    "Clay_String",
     "Clay_ScrollContainerData",
     "Clay_RenderData",
     "Clay_RenderCommand",
@@ -26,6 +29,7 @@ struct_read_only_fields = [
 struct_skip = [
     "Clay_String",
     "Clay_ErrorHandler",
+    "*Wrapper",
 ]
 
 
@@ -51,13 +55,26 @@ def camel_to_snake(name):
     return pythonize_re.sub("_", name).lower()
 
 
-def mode_print(mode, sig_impl):
+def function_string(mode, sig_impl):
     sig, impl = sig_impl
     if mode == MODE_PYX:
         return f"{sig}:\n{impl}"
     if "cdef " in sig:
         return f"{sig}\n"
     return ""
+
+
+def attributes_string(mode, attributes):
+    result = []
+    for attr in attributes:
+        # cdef attributes go in pxd files, but not in pyx files
+        if mode == MODE_PXD and "cdef " in attr:
+            result.append(attr)
+        # python attributes go in pyx files, but not in pxd files
+        elif mode == MODE_PYX and "cdef " not in attr:
+            result.append(attr)
+
+    return "\n".join(result)
 
 
 class DeclNode:
@@ -82,37 +99,11 @@ class DeclNode:
 
     def cvalue_str(self, arg_name, is_ptr):
         if is_ptr:
-            return f"&({arg_name}.__internal)"
-        return f"{arg_name}.__internal"
+            return f"&({arg_name}._cvalue)"
+        return f"{arg_name}._cvalue"
 
     def render(self, mode):
         return ""
-
-
-class ClayStringNode(DeclNode):
-    prio = 0
-    cname = "Clay_String"
-    pname = "str"
-
-    def __init__(self):
-        super().__init__(None)
-
-    def ctor_str(self, arg_name, is_ptr):
-        return f"clay_string_to_py({arg_name})"
-
-    def cvalue_str(self, arg_name, is_ptr):
-        return f'{arg_name} # Clay_String'
-
-    def render(self, mode):
-        return mode_print(mode, (
-            "cdef str clay_string_to_py(Clay_String value)",
-            "    py_bytes = <bytes> value.chars[:value.length]\n"
-            "    return py_bytes.decode(\"UTF-8\")\n\n"
-        )) + mode_print(mode, (
-            "cdef Clay_String clay_string_from_py(str value)",
-            "    py_bytes = value.encode(\"UTF-8\")\n"
-            "    return Clay_String(isStaticallyAllocated=False, length=len(py_bytes), chars=py_bytes)\n\n"
-        ))
 
 
 class FieldNode(DeclNode):
@@ -122,7 +113,10 @@ class FieldNode(DeclNode):
 
     @property
     def pname(self):
-        return camel_to_snake(self.decl["name"])
+        name = camel_to_snake(self.decl["name"])
+        if name in __builtins__.__dict__:
+            return f"{name}_"
+        return name
 
     @property
     def type_node(self):
@@ -136,43 +130,35 @@ class FieldNode(DeclNode):
     def is_ptr(self):
         return self.decl["type"] == "Ptr"
 
-    def void_ptr_getter(self, mode):
-        return mode_print(mode, (
-            "@property\n"
-            f"def {self.pname}(self)",
-            f"    return <object> self.__internal.{self.cname}\n"
-        ))
-
-    def void_ptr_setter(self, mode):
-        if self.is_read_only:
-            return ""
-
-        return mode_print(mode, (
-            f"@{self.pname}.setter\n"
-            f"def {self.pname}(self, object value)",
-            f"    self.__internal.{self.cname} = <void*> value\n"
-        ))
+    def param_string(self, is_optional):
+        if self.type_node:
+            type_str = f"Optional[{self.type_node.pname}]" if is_optional else self.type_node.pname
+            annotation_str = f": {type_str}"
+        else:
+            annotation_str = ""
+        value_str = " = None" if is_optional else ""
+        return f"{self.pname}{annotation_str}{value_str}"
 
     def type_unmapped_getter(self, mode):
-        return mode_print(mode, (
+        return function_string(mode, (
             "@property\n"
             f"def {self.pname}(self)",
-            f"    return self.__internal.{self.cname}\n"
+            f"    return self._cvalue.{self.cname}\n"
         ))
 
     def type_unmapped_setter(self, mode):
         if self.is_read_only:
             return ""
 
-        return mode_print(mode, (
+        return function_string(mode, (
             f"@{self.pname}.setter\n"
             f"def {self.pname}(self, value)",
-            f"    self.__internal.{self.cname} = value\n"
+            f"    self._cvalue.{self.cname} = value\n"
         ))
 
     def typed_getter(self, mode):
-        field_name = f"self.__internal.{self.cname}"
-        return mode_print(mode, (
+        field_name = f"self._cvalue.{self.cname}"
+        return function_string(mode, (
             "@property\n"
             f"def {self.pname}(self) -> {self.type_node.pname}",
             f"    return {self.type_node.ctor_str(field_name, self.is_ptr)}\n"
@@ -182,17 +168,15 @@ class FieldNode(DeclNode):
         if self.is_read_only:
             return ""
 
-        field_name = f"self.__internal.{self.cname}"
-        return mode_print(mode, (
+        field_name = f"self._cvalue.{self.cname}"
+        return function_string(mode, (
             f"@{self.pname}.setter\n"
             f"def {self.pname}(self, value: {self.type_node.pname})",
-            f"    self.__internal.{self.cname} = {self.type_node.cvalue_str('value', self.is_ptr)}\n"
+            f"    self._cvalue.{self.cname} = {self.type_node.cvalue_str('value', self.is_ptr)}\n"
         ))
 
     def render(self, mode):
         if self.type_node is None:
-            if self.decl["type_name"] == "void*":
-                return self.void_ptr_getter(mode) + self.void_ptr_setter(mode)
             return self.type_unmapped_getter(mode) + self.type_unmapped_setter(mode)
 
         return self.typed_getter(mode) + self.typed_setter(mode)
@@ -202,33 +186,168 @@ class StructNode(DeclNode):
     prio = 2
 
     @property
+    def attributes(self):
+        return (
+            f"cdef {self.cname} _cvalue",
+        )
+
+    @property
     def fields(self):
         return [
-            FieldNode(it, (self.cname in struct_read_only_fields))
+            FieldNode(it, (self.cname in struct_read_only))
             for it in self.decl.get("fields", [])
         ]
 
-    def render(self, mode):
-        if mode == MODE_PXD:
-            internal_string = f"cdef {self.cname} __internal\n"
+    @property
+    def constructor(self):
+        if self.cname in struct_read_only:
+            return (
+                "def __init__(self)",
+                "    raise TypeError('This class cannot be instantiated directly.')\n\n"
+            )
         else:
-            internal_string = ""
+            fields = self.fields
+            params_string = ", \n".join([
+                field.param_string(True)
+                for field in fields
+            ])
 
-        fields_str = "\n".join(field.render(mode) for field in self.fields)
-        static_constructor = mode_print(mode, (
+            setters = ""
+            for field in fields:
+                cvalue_str = field.type_node.cvalue_str(field.pname, field.is_ptr) if field.type_node else field.pname
+                setters += (
+                    f"if {field.pname} is not None:\n"
+                    f"    self._cvalue.{field.cname} = {cvalue_str}\n"
+                )
+
+            return (
+                f"def __init__(self, \n{indent(params_string, '        ')}\n)",
+                indent(setters, "    ")
+                + "\n\n"
+            )
+
+    @property
+    def static_constructor(self):
+        return (
             "\n@staticmethod\n"
             f"cdef {self.pname} from_c({self.cname} value)",
-            f"    instance = {self.pname}()\n"
-            "    instance.__internal = value\n"
+            f"    cdef {self.pname} instance = {self.pname}.__new__({self.pname})\n"
+            "    instance._cvalue = value\n"
+            "    return instance\n\n"
+        )
+
+    def render(self, mode):
+        fields_str = "\n".join(field.render(mode) for field in self.fields)
+
+        return f"cdef class {self.pname}:\n" + indent(
+            attributes_string(mode, self.attributes)
+            + function_string(mode, self.constructor)
+            + fields_str
+            + function_string(mode, self.static_constructor),
+            "    "
+        )
+
+
+class VoidPointer(DeclNode):
+    cname = "void*"
+    pname = "object"
+
+    def __init__(self):
+        super().__init__({})
+
+    def ctor_str(self, arg_name, is_ptr):
+        return f"<object> {arg_name}"
+
+    def cvalue_str(self, arg_name, is_ptr):
+        return f"<void*> {arg_name}"
+
+
+class ClayStringNode(StructNode):
+    cname = "Clay_String"
+    pname = "ClayString"
+
+    def __init__(self):
+        super().__init__({})
+
+    @property
+    def attributes(self):
+        return (
+            f"cdef {self.cname} _cvalue",
+            f"cdef bytes _bytes",
+        )
+
+    def render(self, mode):
+        to_str = function_string(mode, (
+            "\ndef __str__(self)",
+            "    cdef bytes _bytes = self._cvalue.chars\n"
+            "    return _bytes.decode(\"utf-8\")\n\n"
+        ))
+
+        from_str = function_string(mode, (
+            "\n@staticmethod\n"
+            f"cdef {self.pname} from_str(str value)",
+            f"    cdef {self.pname} instance = {self.pname}.__new__({self.pname})\n"
+            "    instance._bytes = value.encode(\"utf-8\")\n"
+            f"    instance._cvalue = {self.cname}(\n"
+            "        isStaticallyAllocated=False,\n"
+            "        length=len(instance._bytes),\n"
+            "        chars=instance._bytes)\n"
             "    return instance\n\n"
         ))
+
         return f"cdef class {self.pname}:\n" + indent(
-            internal_string + fields_str + static_constructor, "    "
+            attributes_string(mode, self.attributes)
+            + function_string(mode, self.constructor)
+            + to_str
+            + from_str
+            + function_string(mode, self.static_constructor),
+            "    "
         )
 
 
 class UnionNode(StructNode):
     prio = 1
+
+    @property
+    def constructor(self):
+        if self.cname in struct_read_only:
+            return (
+                "def __init__(self)",
+                "    raise TypeError('This class cannot be instantiated directly.')\n\n"
+            )
+        else:
+            fields = self.fields
+            params_string = ", ".join([
+                field.param_string(True) for field in fields
+            ])
+            args_string = ", ".join([
+                field.type_node.cvalue_str(field.pname, field.is_ptr)
+                if field.type_node
+                else field.pname
+                for field in fields
+            ])
+            if fields:
+                field = fields[0]
+                code_string = (
+                    f"if {field.pname}:\n"
+                    f"    self._cvalue = {self.cname}({field.cname}={field.pname})\n"
+                )
+                for field in fields[1:]:
+                    code_string += (
+                        f"elif {field.pname}:\n"
+                        f"    self._cvalue = {self.cname}({field.cname}={field.pname})\n"
+                    )
+                code_string += (
+                    f"else:\n"
+                    f"    raise ValueError('no')\n"
+                )
+            else:
+                code_string = ""
+
+            return (
+                f"def __init__(self, *, {params_string})",
+                indent(code_string, "    ")
+            )
 
 
 class EnumNode(DeclNode):
@@ -279,8 +398,15 @@ class EnumNode(DeclNode):
         return f"class {name}(Enum):\n" + indent(items_str, "    ") + "\n"
 
 
+def skip_name(name):
+    for pat in struct_skip:
+        if fnmatchcase(name, pat):
+            return True
+    return False
+
+
 def visit(decl):
-    if decl.get("name") in struct_skip:
+    if "name" in decl and skip_name(decl["name"]):
         return None
 
     if decl.get("kind") == "struct":
@@ -305,8 +431,10 @@ def main(defs_json_file, out_path):
     decl_stacks = json.load(defs_json_file)
 
     nodes = [
-        ClayStringNode()
+        VoidPointer(),
+        ClayStringNode(),
     ]
+
     for stack in decl_stacks:
         for decl in stack:
             if (node := visit(decl)) is not None:
@@ -314,13 +442,20 @@ def main(defs_json_file, out_path):
     nodes.sort(key=lambda it: it.prio)
     with out_path.with_suffix(".pyx").open("w") as out_pyx_file:
         out_pyx_file.write(
+            "from cpython.mem cimport PyMem_Malloc\n"
+            "from libc.string cimport strncpy\n"
             "from libclay._clay cimport *\n"
-            "from enum import Enum\n\n\n")
+            "from enum import Enum\n"
+            "from typing import Optional\n"
+            "\n\n"
+        )
         out_pyx_file.write("\n\n".join([node.render(MODE_PYX) for node in nodes]))
     with out_path.with_suffix(".pxd").open("w") as out_pxd_file:
         out_pxd_file.write(
             "from libclay._clay cimport *\n"
-            "from enum import Enum\n\n\n")
+            "from enum import Enum\n"
+            "\n\n"
+        )
         out_pxd_file.write("\n\n".join([node.render(MODE_PXD) for node in nodes]))
 
 
